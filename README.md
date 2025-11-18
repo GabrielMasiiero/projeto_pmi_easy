@@ -9,7 +9,7 @@
 -------------------
 💡 *PMI I*
 
-🔗 _*url github:*_ https://github.com/GabrielMasiiero/projeto-easy-tattoo
+🔗 _*url github:*_ https://github.com/GabrielMasiiero/projeto_pmi_easy
 
 🛬 _*url landpage:*_ https://gabrielmasiiero.github.io/projeto-easy-tattoo/
 🤝 _*url Modelo Negócio (imagem):*_
@@ -22,7 +22,7 @@
 -------------------
 💻 *PMI III*
 
-🖥️ _*Versão do Código no github:*https://github.com/bhernardo17/Easy-Tatto-v1
+🖥️ _*Versão do Código no github:* https://github.com/GabrielMasiiero/projeto_pmi_easy
 🎥 _*url vídeo demonstração (código):*_
 -------------------
 💻 *PMI IV*
