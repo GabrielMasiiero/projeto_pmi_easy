@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil do Tatuador</title>
+    <link rel="stylesheet" href="/css/perfilTatuador.css">
+    <link rel="stylesheet" href="/css/sidebar.css">
+    <link rel="stylesheet" href="/css/tema.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <!-- Ícone de Menu (visível apenas quando a sidebar está fechada) -->
+            <span class="menu-icon">☰</span>
+            <!-- Texto do cabeçalho (visível quando a sidebar está expandida) -->
+            <h2 class="header-text">Fácil encontrar uma Tatto!</h2>
+        </div>
+
+        <ul class="sidebar-menu">
+            <li><a href="/perfil"><i class="fa fa-user"></i><span class="menu-text">Meu Perfil</span></a></li>
+            <li><a href="/posts"><i class="fa fa-paint-brush"></i><span class="menu-text">Feed</span></a></li>
+            <li><a href="/posts/criar"><i class="fa fa-plus"></i><span class="menu-text">Criar Post</span></a></li>
+            <li><a href="/user/busca"><i class="fa fa-search"></i><span class="menu-text">Buscar</span></a></li>
+            <li><a href="/sobre"><i class="fa fa-info-circle"></i><span class="menu-text">Sobre</span></a></li>
+        </ul>
+
+        <div class="sidebar-footer">
+            <a href="/config"><i class="fa fa-cogs"></i><span class="menu-text">Configurações</span></a>
+            <a href="/logout"><i class="fa fa-sign-out-alt"></i><span class="menu-text">Logout</span></a>
+        </div>
+    </div>
+
+    <div class="tattoo-artist-profile">
+        <!-- Cabeçalho do Perfil -->
+        <header class="profile-header">
+            <div class="artist-avatar-letter"
+                style="width: 100px; height: 100px; border-radius: 50%; background: linear-gradient(135deg, #4fc3f7, #29b6f6); display: flex; align-items: center; justify-content: center; font-size: 48px; color: white; font-weight: bold;">
+                <%= user.nome.charAt(0).toUpperCase() %>
+            </div>
+            <div class="artist-info">
+                <h1>
+                    <%= user.nome %>
+                </h1>
+                <% if (user.tipo==='tatuador' && user.estilos && user.estilos.length> 0) { %>
+                    <p>Especializações: <%= user.estilos.join(', ') %></p>
+                <% } %>
+                <% if (user.bio) { %>
+                    <p>Sobre: <%= user.bio %></p>
+                <% } %>
+                <% if (user.cidade || user.estado) { %>
+                    <p>📍 <%= user.cidade || '' %><%= user.cidade && user.estado ? ' , ' : '' %><%= user.estado || '' %></p>
+                <% } %>
+                <% if (user.telefone) { %>
+                    <p>📞 <%= user.telefone %></p>
+                <% } %>
+            </div>
+        </header>
+
+        <!-- Seção de Gerenciamento de Publicações -->
+        <section class="publications-section">
+            <div class="section-header">
+                <h2>Minhas Publicações</h2>
+            </div>
+            <div class="publications-list">
+                <% if (posts && posts.length> 0) { %>
+                    <% posts.forEach(post=> { %>
+                        <article class="publication-item">
+                            <img src="<%= post.imageUrl %>" alt="<%= post.description %>" class="publication-image"
+                                onerror="this.src='/img/tattoo1.jpg'">
+                            <div class="publication-info">
+                                <p class="description">
+                                    <%= post.description %>
+                                </p>
+                                <p class="date">Publicado em: <%= new Date(post.createdAt).toLocaleDateString('pt-BR')
+                                        %>
+                                </p>
+                                <p class="stats">❤️ <%= post.likesCount || 0 %> | 💬 <%= post.comments?.length || 0 %>
+                                </p>
+                                <div class="publication-actions">
+                                    <button class="icon-button" aria-label="Ver"
+                                        onclick="window.location.href='/posts/<%= post._id %>'">👁️</button>
+                                    <button class="icon-button" aria-label="Excluir"
+                                        onclick="deletePost('<%= post._id %>')">❌</button>
+                                </div>
+                            </div>
+                        </article>
+                        <% }); %>
+                            <% } else { %>
+                                <p style="text-align: center; color: #888; padding: 40px;">
+                                    Você ainda não tem publicações. <a href="/posts/criar" style="color: #4fc3f7;">Criar
+                                        primeira publicação</a>
+                                </p>
+                                <% } %>
+            </div>
+        </section>
+
+        <!-- Seção de Estatísticas e Feedback -->
+        <section class="statistics-section">
+            <h2>Estatísticas e Feedback</h2>
+            <div class="stats">
+                <div class="stat-item">
+                    <h3>Posts</h3>
+                    <p>
+                        <%= posts?.length || 0 %>
+                    </p>
+                </div>
+                <div class="stat-item">
+                    <h3>Total de Likes</h3>
+                    <p>
+                        <%= posts?.reduce((sum, post)=> sum + (post.likesCount || 0), 0) || 0 %>
+                    </p>
+                </div>
+                <div class="stat-item">
+                    <h3>Total de Comentários</h3>
+                    <p>
+                        <%= posts?.reduce((sum, post)=> sum + (post.comments?.length || 0), 0) || 0 %>
+                    </p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        async function deletePost(postId) {
+            if (!confirm('Tem certeza que deseja excluir este post?')) return;
+
+            try {
+                const response = await fetch(`/posts/${postId}`, {
+                    method: 'DELETE',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+
+                if (response.ok) {
+                    alert('Post excluído com sucesso!');
+                    window.location.reload();
+                } else {
+                    alert('Erro ao excluir post');
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+                alert('Erro ao excluir post');
+            }
+        }
+    </script>
+</body>
+<script src="/js/script.js"></script>
+
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feed de Tatuagens</title>
+    <link rel="stylesheet" href="/css/feed.css">
+    <link rel="stylesheet" href="/css/sidebar.css">
+    <link rel="stylesheet" href="/css/tema.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <!-- Ícone de Menu (visível apenas quando a sidebar está fechada) -->
+            <span class="menu-icon">☰</span>
+            <!-- Texto do cabeçalho (visível quando a sidebar está expandida) -->
+            <h2 class="header-text">Fácil encontrar uma Tatto!</h2>
+        </div>
+
+        <ul class="sidebar-menu">
+            <li><a href="/perfil"><i class="fa fa-user"></i><span class="menu-text">Meu Perfil</span></a></li>
+            <li><a href="/posts"><i class="fa fa-paint-brush"></i><span class="menu-text">Feed</span></a></li>
+            <li><a href="/posts/criar"><i class="fa fa-plus"></i><span class="menu-text">Criar Post</span></a></li>
+            <li><a href="/user/busca"><i class="fa fa-search"></i><span class="menu-text">Buscar Tatuadores</span></a>
+            </li>
+            <li><a href="/sobre"><i class="fa fa-info-circle"></i><span class="menu-text">Sobre</span></a></li>
+        </ul>
+
+        <div class="sidebar-footer">
+            <a href="/config"><i class="fa fa-cogs"></i><span class="menu-text">Configurações</span></a>
+            <a href="/logout"><i class="fa fa-sign-out-alt"></i><span class="menu-text">Logout</span></a>
+        </div>
+    </div>
+
+    <!-- Cabeçalho com o nome do usuário logado -->
+    <header>
+        <div
+            style="display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto;">
+            <div>
+                <h1>Easy Tattoo</h1>
+                <p>Bem-vindo, <%= currentUser ? currentUser.nome : 'Visitante' %>
+                </p>
+            </div>
+            <a href="/posts/criar"
+                style="background-color: #4fc3f7; color: #1c1c1c; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-weight: 600;">
+                ➕ Criar Post
+            </a>
+        </div>
+    </header>
+
+    <main class="feed-container">
+        <% if (posts && posts.length> 0) { %>
+            <% posts.forEach(post=> { %>
+                <div class="post-card">
+                    <img src="<%= post.imageUrl %>" alt="Tatuagem de <%= post.author?.nome || 'Artista' %>"
+                        onerror="this.src='/img/tattoo1.jpg'">
+                    <div class="post-details">
+                        <h2>
+                            <%= post.author?.nome || 'Artista Desconhecido' %>
+                        </h2>
+                        <p class="description">
+                            <%= post.description %>
+                        </p>
+                        <% if (post.tags && post.tags.length> 0) { %>
+                            <div class="tags">
+                                <% post.tags.forEach(tag=> { %>
+                                    <span class="tag">#<%= tag %></span>
+                                    <% }); %>
+                            </div>
+                            <% } %>
+                                <div class="post-actions">
+                                    <button class="like-btn" data-post-id="<%= post._id %>">
+                                        ❤️ <span class="like-count">
+                                            <%= post.likesCount || 0 %>
+                                        </span>
+                                    </button>
+                                    <span class="comments">💬 <%= post.comments?.length || 0 %></span>
+                                </div>
+                    </div>
+                </div>
+                <% }); %>
+                    <% } else { %>
+                        <div class="no-posts">
+                            <p>Nenhuma tatuagem publicada ainda. Seja o primeiro!</p>
+                        </div>
+                        <% } %>
+
+                            <!-- Paginação -->
+                            <% if (totalPages> 1) { %>
+                                <div class="pagination">
+                                    <% if (hasPrev) { %>
+                                        <a href="/posts?page=<%= currentPage - 1 %>" class="page-btn">← Anterior</a>
+                                        <% } %>
+                                            <span class="page-info">Página <%= currentPage %> de <%= totalPages %>
+                                                        </span>
+                                            <% if (hasNext) { %>
+                                                <a href="/posts?page=<%= currentPage + 1 %>" class="page-btn">Próxima
+                                                    →</a>
+                                                <% } %>
+                                </div>
+                                <% } %>
+    </main>
+
+</body>
+<script src="/js/script.js"></script>
+
+</html>

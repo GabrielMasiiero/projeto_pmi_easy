@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criar Post - Easy Tattoo</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/sidebar.css">
+    <link rel="stylesheet" href="/css/tema.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            overflow-x: hidden;
+        }
+
+        .create-post-container {
+            max-width: 600px;
+            margin: 40px auto;
+            margin-left: 120px;
+            margin-right: 20px;
+            padding: 30px;
+            background-color: #2e2e2e;
+            border-radius: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .create-post-container {
+                margin-left: 20px;
+                margin-right: 20px;
+            }
+        }
+
+        .create-post-container h1 {
+            color: #4fc3f7;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #e0e0e0;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-group input[type="text"],
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            background-color: #1c1c1c;
+            border: 1px solid #444;
+            border-radius: 5px;
+            color: #e0e0e0;
+            font-size: 14px;
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-group input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #1c1c1c;
+            border: 1px solid #444;
+            border-radius: 5px;
+            color: #e0e0e0;
+        }
+
+        .form-group select {
+            cursor: pointer;
+        }
+
+        .form-group small {
+            color: #888;
+            font-size: 12px;
+            display: block;
+            margin-top: 5px;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 12px;
+            background-color: #4fc3f7;
+            color: #1c1c1c;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-submit:hover {
+            background-color: #29b6f6;
+        }
+
+        .btn-cancel {
+            width: 100%;
+            padding: 12px;
+            background-color: transparent;
+            color: #888;
+            border: 1px solid #444;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s;
+        }
+
+        .btn-cancel:hover {
+            border-color: #888;
+            color: #e0e0e0;
+        }
+
+        .error-message {
+            background-color: #ff6b6b;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .image-preview {
+            margin-top: 10px;
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 5px;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <span class="menu-icon">☰</span>
+            <h2 class="header-text">Easy Tattoo</h2>
+        </div>
+
+        <ul class="sidebar-menu">
+            <li><a href="/perfil"><i class="fa fa-user"></i><span class="menu-text">Meu Perfil</span></a></li>
+            <li><a href="/posts"><i class="fa fa-paint-brush"></i><span class="menu-text">Feed</span></a></li>
+            <li><a href="/posts/criar"><i class="fa fa-plus"></i><span class="menu-text">Criar Post</span></a></li>
+            <li><a href="/sobre"><i class="fa fa-info-circle"></i><span class="menu-text">Sobre</span></a></li>
+        </ul>
+
+        <div class="sidebar-footer">
+            <a href="/config"><i class="fa fa-cogs"></i><span class="menu-text">Configurações</span></a>
+            <a href="/logout"><i class="fa fa-sign-out-alt"></i><span class="menu-text">Logout</span></a>
+        </div>
+    </div>
+
+    <div class="create-post-container">
+        <h1>📸 Criar Nova Publicação</h1>
+
+        <% if (typeof errorMessage !=='undefined' && errorMessage) { %>
+            <div class="error-message">
+                <%= errorMessage %>
+            </div>
+            <% } %>
+
+                <form action="/posts" method="POST" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="image">Imagem da Tatuagem *</label>
+                        <input type="file" id="image" name="image" accept="image/*" required>
+                        <small>Formatos aceitos: JPG, PNG, WEBP (máx. 5MB)</small>
+                        <img id="imagePreview" class="image-preview" alt="Preview">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Descrição *</label>
+                        <textarea id="description" name="description" required
+                            placeholder="Conte sobre esta tatuagem..."></textarea>
+                        <small>Mínimo 3 caracteres, máximo 500</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tags">Tags (separadas por vírgula)</label>
+                        <input type="text" id="tags" name="tags" placeholder="Ex: dragao, japones, oriental">
+                        <small>Use vírgulas para separar as tags</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="estilos">Estilos</label>
+                        <select id="estilos" name="estilos" multiple size="5">
+                            <option value="tradicional">Tradicional</option>
+                            <option value="old-school">Old School</option>
+                            <option value="realismo">Realismo</option>
+                            <option value="aquarela">Aquarela</option>
+                            <option value="blackwork">Blackwork</option>
+                            <option value="geometrico">Geométrico</option>
+                            <option value="minimalista">Minimalista</option>
+                            <option value="japones">Japonês</option>
+                            <option value="tribal">Tribal</option>
+                            <option value="new-school">New School</option>
+                        </select>
+                        <small>Segure Ctrl/Cmd para selecionar múltiplos estilos</small>
+                    </div>
+
+                    <button type="submit" class="btn-submit">Publicar</button>
+                    <button type="button" class="btn-cancel" onclick="window.location.href='/posts'">Cancelar</button>
+                </form>
+    </div>
+
+    <script src="/js/script.js"></script>
+    <script>
+        // Preview da imagem
+        document.getElementById('image').addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const preview = document.getElementById('imagePreview');
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+
+</body>
+
+</html>

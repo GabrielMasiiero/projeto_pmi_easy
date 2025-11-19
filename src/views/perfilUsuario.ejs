@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil do Usuário</title>
+    <link rel="stylesheet" href="/css/perfilUsuario.css">
+    <link rel="stylesheet" href="/css/sidebar.css">
+    <link rel="stylesheet" href="/css/tema.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+</head>
+
+
+<body>
+    <!--<img src="/img/logo-easy.jpg" style="width: 70%;"> -->
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <!-- Ícone de Menu (visível apenas quando a sidebar está fechada) -->
+            <span class="menu-icon">☰</span>
+            <!-- Texto do cabeçalho (visível quando a sidebar está expandida) -->
+            <h2 class="header-text">Fácil encontrar uma Tatto!</h2>
+        </div>
+
+        <ul class="sidebar-menu">
+            <li><a href="/perfil"><i class="fa fa-user"></i><span class="menu-text">Meu Perfil</span></a></li>
+            <li><a href="/posts"><i class="fa fa-paint-brush"></i><span class="menu-text">Feed</span></a></li>
+            <li><a href="/posts/criar"><i class="fa fa-plus"></i><span class="menu-text">Criar Post</span></a></li>
+            <li><a href="/user/busca"><i class="fa fa-search"></i><span class="menu-text">Buscar</span></a></li>
+            <li><a href="/sobre"><i class="fa fa-info-circle"></i><span class="menu-text">Sobre</span></a></li>
+        </ul>
+
+        <div class="sidebar-footer">
+            <a href="/config"><i class="fa fa-cogs"></i><span class="menu-text">Configurações</span></a>
+            <a href="/logout"><i class="fa fa-sign-out-alt"></i><span class="menu-text">Logout</span></a>
+        </div>
+    </div>
+
+
+
+    <div class="profile-container">
+        <div class="profile-header">
+            <div class="user-avatar-letter"
+                style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, #667eea, #764ba2); display: flex; align-items: center; justify-content: center; font-size: 36px; color: white; font-weight: bold;">
+                <%= user.nome.charAt(0).toUpperCase() %>
+            </div>
+            <div class="user-info">
+                <h1>
+                    <%= user.nome %>
+                </h1>
+                <p>Email: <%= user.email %>
+                </p>
+                <% if (user.bio) { %>
+                    <p>
+                        <%= user.bio %>
+                    </p>
+                    <% } %>
+                        <% if (user.cidade || user.estado) { %>
+                            <p>📍 <%= user.cidade || '' %>
+                                    <%= user.cidade && user.estado ? ', ' : '' %>
+                                        <%= user.estado || '' %>
+                            </p>
+                            <% } %>
+                                <% if (user.telefone) { %>
+                                    <p>📞 <%= user.telefone %>
+                                    </p>
+                                    <% } %>
+                                        <p>Membro desde: <%= new Date(user.createdAt).toLocaleDateString('pt-BR', {
+                                                month: 'long' , year: 'numeric' }) %>
+                                        </p>
+            </div>
+        </div>
+
+        <% if (user.tipo==='tatuador' && posts && posts.length> 0) { %>
+            <section class="favorites-section">
+                <h2>Portfólio do Tatuador</h2>
+                <div
+                    style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; margin-top: 20px;">
+                    <% posts.forEach(post=> { %>
+                        <div style="background: #2e2e2e; border-radius: 8px; overflow: hidden; cursor: pointer;"
+                            onclick="window.location.href='/posts/<%= post._id %>'">
+                            <img src="<%= post.imageUrl %>" alt="<%= post.description %>"
+                                style="width: 100%; height: 200px; object-fit: cover;"
+                                onerror="this.src='/img/tattoo1.jpg'">
+                            <div style="padding: 10px;">
+                                <p style="color: #ccc; font-size: 0.9em; margin: 0;">
+                                    <%= post.description.substring(0, 60) %>...
+                                </p>
+                                <p style="color: #888; font-size: 0.8em; margin-top: 5px;">❤️ <%= post.likesCount || 0
+                                        %> | 💬 <%= post.comments?.length || 0 %>
+                                </p>
+                            </div>
+                        </div>
+                        <% }); %>
+                </div>
+            </section>
+            <% } else { %>
+                <section class="favorites-section">
+                    <h2>Posts Curtidos</h2>
+                    <p style="text-align: center; color: #888; padding: 40px;">
+                        <% if (user.tipo==='usuario' ) { %>
+                            Comece a curtir posts para vê-los aqui!
+                            <% } else { %>
+                                Nenhum post publicado ainda.
+                                <% } %>
+                    </p>
+                </section>
+                <% } %>
+                    <!-- Repita para outros itens -->
+                    </ul>
+                    </section>
+
+                    <section class="history-section">
+                        <h2>Histórico de Agendamentos</h2>
+                        <ul class="history-list">
+                            <li>
+                                <div class="appointment-info">
+                                    <span><strong>Data:</strong> 15/08/2023</span>
+                                    <span><strong>Artista:</strong> Nome do Artista</span>
+                                    <p><strong>Descrição:</strong> Pequena descrição sobre a tatuagem.</p>
+                                </div>
+                                <button class="icon-button" aria-label="Deixar Feedback">
+                                    ⭐
+                                </button>
+                            </li>
+                            <!-- Repita para outros agendamentos -->
+                        </ul>
+                    </section>
+    </div>
+
+</body>
+<script src="/js/script.js"></script>
+
+</html>

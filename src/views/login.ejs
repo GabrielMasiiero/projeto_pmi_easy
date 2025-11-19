@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login ou Cadastro - Easy Tattoo</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/tema.css">
+    <script src="/js/script.js" defer></script>
+</head>
+
+<body>
+    <div class="login-container">
+        <div id="form-header">
+            <h1>Bem-vindo ao Easy Tattoo!</h1>
+            <img src="/img/logo-easy.jpg" style="width: 280px; height: 160px;" alt="Logo Easy Tattoo">
+        </div>
+
+        <form action="/login" method="POST" id="login-form">
+            <p class="error-message" style="color: red;" aria-live="assertive">
+                <%= errorMessage || '' %>
+            </p>
+
+            <div class="input-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required aria-label="Digite seu email">
+            </div>
+            <div class="input-group">
+                <label for="password">Senha</label>
+                <input type="password" id="password" name="password" required aria-label="Digite sua senha">
+            </div>
+
+            <button type="submit" class="btn-login" id="submit-btn">Entrar</button>
+        </form>
+    </div>
+    <script>
+        document.getElementById('login-form').addEventListener('submit', function (event) {
+            const submitButton = document.getElementById('submit-btn');
+            
+            // Exibe o estado de carregamento no botão
+            submitButton.disabled = true;
+            submitButton.innerText = 'Processando...';
+        });
+    </script>
+</body>
+
+</html>

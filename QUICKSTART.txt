@@ -1,0 +1,74 @@
+═══════════════════════════════════════════════════════════
+🎨 EASY TATTOO - INÍCIO RÁPIDO
+═══════════════════════════════════════════════════════════
+
+🚀 INICIAR O PROJETO
+═══════════════════════════════════════════════════════════
+docker-compose up -d
+docker-compose exec app npm run seed
+
+🌐 ACESSAR
+═══════════════════════════════════════════════════════════
+http://localhost:3000
+
+🔑 CREDENCIAIS PARA LOGIN
+═══════════════════════════════════════════════════════════
+
+👤 USUÁRIO COMUM:
+   Email: joao@example.com
+   Senha: senha123
+
+🎨 TATUADOR:
+   Email: carlos@tattoo.com
+   Senha: senha123
+
+📋 MAIS OPÇÕES:
+   maria@example.com    / senha123 (Usuário)
+   ana@tattoo.com       / senha123 (Tatuador - Realismo)
+   pedro@tattoo.com     / senha123 (Tatuador - Blackwork)
+   juliana@tattoo.com   / senha123 (Tatuador - Minimalista)
+   roberto@tattoo.com   / senha123 (Tatuador - Japonês)
+
+📝 COMO CADASTRAR NOVA CONTA
+═══════════════════════════════════════════════════════════
+1. Acesse http://localhost:3000
+2. Clique em "Cadastrar-se"
+3. Preencha os dados:
+   - Nome completo
+   - Email
+   - Senha (min 6 caracteres + 1 número)
+   - Confirme a senha
+   - Escolha: Usuário ou Tatuador
+4. Clique em "Cadastrar"
+5. Faça login!
+
+🛠️ COMANDOS ÚTEIS
+═══════════════════════════════════════════════════════════
+docker-compose up -d          # Iniciar
+docker-compose down           # Parar
+docker-compose logs -f app    # Ver logs
+docker-compose exec app npm run seed  # Popular banco
+docker-compose restart app    # Reiniciar app
+
+📚 DOCUMENTAÇÃO COMPLETA
+═══════════════════════════════════════════════════════════
+README.md              - Documentação principal
+CREDENTIALS.md         - Todas as credenciais
+docs/API.md           - Documentação da API
+docs/GETTING_STARTED.md - Guia detalhado
+
+🆘 PROBLEMAS?
+═══════════════════════════════════════════════════════════
+1. Não consigo fazer login?
+   → Execute: docker-compose exec app npm run seed
+
+2. Erro de conexão?
+   → Verifique: docker-compose ps
+
+3. Cadastro não funciona?
+   → Verifique se preencheu todos os campos
+   → Senha deve ter min 6 caracteres + 1 número
+
+═══════════════════════════════════════════════════════════
+✨ Pronto para tatuar! 🎨
+═══════════════════════════════════════════════════════════
