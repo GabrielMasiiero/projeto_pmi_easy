@@ -1,104 +1,433 @@
+/* ===== ESTILO GERAL ===== */
 
 body {
-    /* font-family: Arial, sans-serif;
-    background-color: black; */
-    color: #333;
     margin: 0;
-    padding: 20px;
-    display: flex;
-    justify-content: center;
+    padding: 0;
+    background: #121212;
+    color: #e5e5e5;
+    font-family: "Inter", "Segoe UI", sans-serif;
 }
 
-.profile-container {
-    max-width: 700px;
-    width: 100%;
-    background-color: #fdfdfdee;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+/* ===== MODAL OVERLAY ===== */
+.profile-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+    z-index: 998;
+    animation: fadeIn 0.3s ease;
 }
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* ===== MODAL POPUP ===== */
+.profile-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #1a1a1a;
+    border: 1px solid rgba(79, 195, 247, 0.2);
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+    z-index: 999;
+    max-width: 700px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 35px;
+    animation: slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -45%);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
+
+/* Scrollbar bonito */
+.profile-modal::-webkit-scrollbar {
+    width: 6px;
+}
+
+.profile-modal::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.profile-modal::-webkit-scrollbar-thumb {
+    background: #4fc3f7;
+    border-radius: 3px;
+}
+
+.profile-modal::-webkit-scrollbar-thumb:hover {
+    background: #29b6f6;
+}
+
+/* ===== BOTÃO FECHAR ===== */
+.modal-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 35px;
+    height: 35px;
+    border: none;
+    background: rgba(255, 82, 82, 0.15);
+    border-radius: 50%;
+    color: #ff5252;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+    z-index: 1000;
+}
+
+.modal-close:hover {
+    background: rgba(255, 82, 82, 0.3);
+    transform: rotate(90deg) scale(1.1);
+}
+
+/* ===== CABEÇALHO DO PERFIL ===== */
 
 .profile-header {
+    background: rgba(79, 195, 247, 0.08);
+    border: 1px solid rgba(79, 195, 247, 0.2);
+    border-radius: 16px;
+    padding: 25px;
     display: flex;
+    gap: 25px;
     align-items: center;
     margin-bottom: 30px;
-    border-bottom: 1px solid #e0e0e0;
-    padding-bottom: 15px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
 }
 
-.user-photo {
-    width: 70px;
-    height: 70px;
+.artist-avatar-letter {
+    width: 85px !important;
+    height: 85px !important;
+    font-size: 40px !important;
     border-radius: 50%;
-    margin-right: 20px;
-    border: 2px solid #ddd;
-}
-
-.user-info h1 {
-    font-size: 1.6rem;
-    margin: 0;
-    color: #222;
-}
-
-.user-info p {
-    font-size: 0.9rem;
-    color: #666;
-}
-
-.favorites-section, .history-section {
-    margin-bottom: 30px;
-}
-
-.favorites-section h2, .history-section h2 {
-    font-size: 1.4rem;
-    color: #333;
-    margin-bottom: 10px;
-    font-weight: normal;
-}
-
-.favorites-list, .history-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.favorites-list li, .history-list li {
+    background: linear-gradient(135deg, #4fc3f7, #29b6f6);
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: 10px 0;
-    border-bottom: 1px solid #e0e0e0;
+    justify-content: center;
+    font-weight: 700;
+    color: white;
+    box-shadow: 0 6px 25px rgba(79, 195, 247, 0.3);
+    flex-shrink: 0;
 }
 
-.tattoo-info, .appointment-info {
-    font-size: 1rem;
-    color: #444;
+.artist-info h1 {
+    font-size: 1.6rem;
+    margin: 0 0 8px 0;
+    font-weight: 700;
+    color: #ffffff;
 }
 
-.artist-name {
+.artist-info p {
+    margin: 6px 0;
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+/* ===== PUBLICAÇÕES ===== */
+
+.section-header {
+    margin: 20px 0;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(79, 195, 247, 0.3);
+}
+
+.section-header h2 {
+    margin: 0;
+    font-size: 1.3rem;
+}
+
+.publications-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+}
+
+/* Cards menores e delicados */
+.publication-item {
+    background: rgba(79, 195, 247, 0.05);
+    border: 1px solid rgba(79, 195, 247, 0.15);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: 0.25s;
+}
+
+.publication-item:hover {
+    transform: translateY(-3px);
+    border-color: #4fc3f7;
+    box-shadow: 0 8px 20px rgba(79, 195, 247, 0.15);
+}
+
+.publication-image {
+    width: 100%;
+    height: 190px;
+    object-fit: cover;
+}
+
+.publication-info {
+    padding: 14px;
+}
+
+.publication-info .description {
     font-size: 0.85rem;
-    color: #777;
-    margin-top: 2px;
+    opacity: 0.92;
+    margin-bottom: 8px;
+    line-height: 1.35;
+}
+
+.publication-info .date {
+    font-size: 0.75rem;
+    color: #999;
+}
+
+.publication-info .stats {
+    font-size: 0.78rem;
+    margin-top: 8px;
+    color: #4fc3f7;
+}
+
+/* Botões menores e suaves */
+.publication-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(79, 195, 247, 0.1);
 }
 
 .icon-button {
-    background: none;
+    flex: 1;
+    padding: 6px 0;
+    font-size: 0.75rem;
+    border-radius: 6px;
     border: none;
-    font-size: 1.2rem;
     cursor: pointer;
-    color: #ff5c5c;
-    padding: 0;
-    margin: 0;
+    background: #4fc3f7;
+    color: #121212;
+    font-weight: 600;
+    transition: 0.25s;
 }
 
 .icon-button:hover {
-    color: #e04b4b;
+    background: #29b6f6;
+    transform: scale(1.03);
 }
 
-.appointment-info p {
-    font-size: 0.9rem;
-    color: #555;
-    margin: 5px 0 0;
+.icon-button:nth-child(2) {
+    background: #ff5252;
 }
 
+.icon-button:nth-child(2):hover {
+    background: #ff3b3b;
+}
 
+/* ===== ESTATÍSTICAS ===== */
+
+.statistics-section {
+    background: rgba(79, 195, 247, 0.08);
+    border: 1px solid rgba(79, 195, 247, 0.2);
+    padding: 28px;
+    border-radius: 14px;
+    margin-top: 35px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.statistics-section h2 {
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+}
+
+.stat-item {
+    text-align: center;
+    padding: 18px;
+    border-radius: 10px;
+    background: rgba(79, 195, 247, 0.08);
+    border: 1px solid rgba(79, 195, 247, 0.15);
+    transition: 0.25s;
+}
+
+.stat-item:hover {
+    transform: translateY(-3px);
+    background: rgba(79, 195, 247, 0.12);
+    border-color: #4fc3f7;
+}
+
+.stat-item h3 {
+    font-size: 0.75rem;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    opacity: 0.85;
+}
+
+.stat-item p {
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: #4fc3f7;
+}
+
+/* ===== RESPONSIVO ===== */
+
+@media (max-width: 768px) {
+    .profile-modal {
+        width: 95%;
+        padding: 25px;
+        margin: 0 auto;
+    }
+
+    .profile-header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .artist-avatar-letter {
+        width: 70px !important;
+        height: 70px !important;
+    }
+
+    .artist-info h1 {
+        font-size: 1.3rem;
+    }
+
+    .stats {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ===== MODAL DO POST AMPLIADO ===== */
+.post-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(5px);
+    z-index: 1000;
+    display: none;
+    animation: fadeIn 0.3s ease;
+}
+
+.post-modal-overlay.active {
+    display: block;
+}
+
+.post-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9);
+    background: #1a1a1a;
+    border: 1px solid rgba(79, 195, 247, 0.3);
+    border-radius: 18px;
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.7);
+    z-index: 1001;
+    max-width: 800px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 30px;
+    display: none;
+    animation: slideUpPost 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.post-modal.active {
+    display: block;
+}
+
+@keyframes slideUpPost {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -45%) scale(0.85);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+.post-modal::-webkit-scrollbar {
+    width: 6px;
+}
+
+.post-modal::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.post-modal::-webkit-scrollbar-thumb {
+    background: #4fc3f7;
+    border-radius: 3px;
+}
+
+.post-modal::-webkit-scrollbar-thumb:hover {
+    background: #29b6f6;
+}
+
+.post-modal-image {
+    width: 100%;
+    height: auto;
+    max-height: 500px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.post-modal-description {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #e5e5e5;
+    margin: 0;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+}
+
+.post-modal .modal-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 35px;
+    height: 35px;
+    border: none;
+    background: rgba(255, 82, 82, 0.15);
+    border-radius: 50%;
+    color: #ff5252;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+    z-index: 1002;
+}
+
+.post-modal .modal-close:hover {
+    background: rgba(255, 82, 82, 0.3);
+    transform: rotate(90deg) scale(1.1);
+}
